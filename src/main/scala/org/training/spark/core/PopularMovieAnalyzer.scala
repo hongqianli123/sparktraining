@@ -42,7 +42,7 @@ object PopularMovieAnalyzer {
       (x(0), x(2))
     }.filter(_._2.equals(USER_AGE))
 
-    //Array[String]
+    //Array[String] 年龄为24岁的用户集合
     val userlist = users.map(_._1).collect()
 
     //broadcast
@@ -53,18 +53,22 @@ object PopularMovieAnalyzer {
     /**
      * Step 3: map-side join RDDs
      */
-
+    //ratingsRdd : userID, movieID, ratings, timestamp
     val topKmovies = ratingsRdd.map(_.split("::")).map{ x =>
       (x(0), x(1))
     }.filter { x =>
+      //过滤出年龄为24岁的评分数据
       broadcastUserSet.value.contains(x._1)
     }.map{ x=>
+      //每个MovidId 标记1次，做词频统计
       (x._2, 1)
     }.reduceByKey(_ + _).map{ x =>
+      //key value反转，电影数量在前，名称在后
       (x._2, x._1)
     }.sortByKey(false).map{ x=>
+      //根据key降序排序，再做反转
       (x._2, x._1)
-    }.take(10)
+    }.take(10)//取前十名
 
     /**
      * Transfrom filmID to fileName
