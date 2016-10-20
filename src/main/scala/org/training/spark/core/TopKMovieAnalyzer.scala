@@ -88,7 +88,7 @@ object TopKMovieAnalyzer {
     //所有女性用户
     val broadcastWomenUsers: Broadcast[Array[String]] = sc.broadcast(womenUsers)
     //ratings:RDD[(userID, movieID, ratings)]
-    println("women most like movie:")
+    println("Women Most Like Movie:")
     ratings.
       //过滤出女性用户
       filter(x => broadcastWomenUsers.value.contains(x._1)).
@@ -110,7 +110,7 @@ object TopKMovieAnalyzer {
     //所有男性用户
     val broadcastMenUsers: Broadcast[Array[String]] = sc.broadcast(menUsers)
     //ratings:RDD[(userID, movieID, ratings)]
-    println("men most like movie:")
+    println("Men Most Like Movie:")
     ratings.
       //过滤出男性用户
       filter(x => broadcastMenUsers.value.contains(x._1)).
