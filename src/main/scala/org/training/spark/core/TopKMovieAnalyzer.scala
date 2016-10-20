@@ -107,12 +107,12 @@ object TopKMovieAnalyzer {
       (x(0), x(1))
     }.filter(_._2.equals(MAN)).map(_._1).collect()
 
-    //所有女性用户
+    //所有男性用户
     val broadcastMenUsers: Broadcast[Array[String]] = sc.broadcast(menUsers)
     //ratings:RDD[(userID, movieID, ratings)]
     println("men most like movie:")
     ratings.
-      //过滤出女性用户
+      //过滤出男性用户
       filter(x => broadcastMenUsers.value.contains(x._1)).
       //词频统计 key 电影ID
       map{ x => (x._2,1)}.
